@@ -19,12 +19,13 @@
             android:id="@+id/am_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/am_title"
-            android:textSize="25sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@{model.title}"
+            android:textSize="25sp"
+            tools:text="Welcome!"/>
 
         <Button
             android:id="@+id/am_join_leave_btn"
@@ -47,6 +48,16 @@
             app:layout_constraintTop_toBottomOf="@+id/am_title"
             android:text="@{model.muteUnMuteButtonText}"
             tools:text="MUTE" />
+
+        <ImageView
+            android:id="@+id/networkStatus"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:contentDescription="@null"
+            android:src="@drawable/baseline_network_cell_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/am_network_label" />
 
         <TextView
             android:id="@+id/am_network_label"

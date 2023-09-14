@@ -7,18 +7,30 @@ import com.app.voip.BR;
 
 public class MainActivityViewModel extends BaseObservable {
 
+    private String title;
     private String joinLeaveButtonText;
     private String muteUnMuteButtonText;
     private String networkStatus;
 
     public MainActivityViewModel() {}
 
-    public MainActivityViewModel(String joinLeaveButtonText,
+    public MainActivityViewModel(String title, String joinLeaveButtonText,
                                String muteUnMuteButtonText, String networkStatus)
     {
+        this.title = title;
         this.joinLeaveButtonText = joinLeaveButtonText;
         this.muteUnMuteButtonText = muteUnMuteButtonText;
         this.networkStatus = networkStatus;
+    }
+
+    @Bindable
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+        notifyPropertyChanged(BR.title);
     }
 
     @Bindable
