@@ -12,6 +12,7 @@ public class MainActivityViewModel extends BaseObservable {
     private String muteUnMuteButtonText;
     private String networkStatus;
 
+    //Default Public Constructor
     public MainActivityViewModel() {}
 
     public MainActivityViewModel(String title, String joinLeaveButtonText,
