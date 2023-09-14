@@ -6,6 +6,8 @@ import java.util.Properties
 object Util {
     private const val PROPERTIES_FILE = "local.properties"
 
+    //Get app id from local.properties file it is a safer way to get without
+    //leaking it in public
     fun getAgoraAppID(): String {
         val properties = Properties()
         return try {
@@ -20,6 +22,8 @@ object Util {
         }
     }
 
+    //Get app certificate from local.properties file it is a safer way to get without
+    //leaking it in public
     fun getAgoraAppCertificate(): String {
         val properties = Properties()
         return try {
