@@ -1,9 +1,13 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id ("kotlin-kapt")
 }
 
+val agoraAppID: String = gradleLocalProperties(rootDir).getProperty("agoraAppID")
+val agoraAppCertificate: String = gradleLocalProperties(rootDir).getProperty("agoraAppCertificate")
 android {
     namespace = "com.app.voip"
     compileSdk = 34
@@ -15,6 +19,8 @@ android {
         versionCode = 1
         versionName = "1.0.0"
 
+        android.buildFeatures.buildConfig = true
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -25,6 +31,21 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        debug {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+        getByName("debug") {
+            buildConfigField("String", "agoraAppID", agoraAppID)
+            buildConfigField("String", "agoraAppCertificate", agoraAppCertificate)
+        }
+        getByName("release") {
+            buildConfigField("String", "agoraAppID", agoraAppID)
+            buildConfigField("String", "agoraAppCertificate", agoraAppCertificate)
         }
     }
     compileOptions {

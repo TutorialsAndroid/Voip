@@ -2,6 +2,7 @@ package com.app.voip
 
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -96,8 +97,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        appId = Util.getAgoraAppID()
-        appCertificate = Util.getAgoraAppCertificate()
+        //Get the agora appId and appCertificate from BuildConfig
+        appId = BuildConfig.agoraAppID
+        appCertificate = BuildConfig.agoraAppCertificate
+
+        //Print the appId and appCertificate in logCat
+        Log.d(className, "AppID: $appId AppCertificate: $appCertificate")
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -154,7 +159,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }.start()
         } catch (e: Exception) {
-            throw RuntimeException("Check the error.")
+            throw RuntimeException("Check the error. $e")
         }
     }
 
