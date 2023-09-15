@@ -27,14 +27,31 @@
             android:textSize="25sp"
             tools:text="Welcome!"/>
 
+        <!-- Input Field is added But the it is not called anywhere in class file. It is under development       -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/am_join_channel_input_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintStart_toStartOf="@+id/am_title"
+            app:layout_constraintTop_toBottomOf="@+id/am_title"
+            android:hint="@string/am_join_channel_input_layout_hint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/am_join_channel_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
         <Button
             android:id="@+id/am_join_leave_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="6dp"
             app:layout_constraintEnd_toStartOf="@+id/am_mute_unmute_btn"
-            app:layout_constraintStart_toStartOf="@+id/am_title"
-            app:layout_constraintTop_toBottomOf="@+id/am_title"
+            app:layout_constraintStart_toStartOf="@+id/am_join_channel_input_layout"
+            app:layout_constraintTop_toBottomOf="@+id/am_join_channel_input_layout"
             android:text="@{model.joinLeaveButtonText}"
             tools:text="JOIN NOW" />
 
@@ -43,9 +60,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
-            app:layout_constraintEnd_toEndOf="@+id/am_title"
+            app:layout_constraintEnd_toEndOf="@+id/am_join_channel_input_layout"
             app:layout_constraintStart_toEndOf="@+id/am_join_leave_btn"
-            app:layout_constraintTop_toBottomOf="@+id/am_title"
+            app:layout_constraintTop_toBottomOf="@+id/am_join_channel_input_layout"
             android:text="@{model.muteUnMuteButtonText}"
             tools:text="MUTE" />
 

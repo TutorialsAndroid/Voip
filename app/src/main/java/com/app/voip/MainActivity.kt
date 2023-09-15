@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
         override fun onLastmileProbeResult(result: LastmileProbeResult) {
             agoraEngine!!.stopLastmileProbeTest()
             // The result object contains the detailed test results that help you
-            // manage call quality. For example, the downlink jitter"
+            // manage call quality. For example, the down-link jitter"
             showMessage("Downlink jitter: " + result.downlinkReport.jitter)
         }
 

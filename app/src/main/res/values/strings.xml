@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Voip</string>
     <string name="am_title">Welcome!</string>
+    <string name="am_join_channel_input_layout_hint">Enter channel name...</string>
 </resources>
