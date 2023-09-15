@@ -9,12 +9,14 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.app.voip.agora.RtcTokenBuilder2Generator
 import com.app.voip.databinding.ActivityMainBinding
-import com.app.voip.helper.Util
 import com.app.voip.mvvm.MainActivityViewModel
+import io.agora.rtc2.ChannelMediaOptions
+import io.agora.rtc2.Constants
 import io.agora.rtc2.IRtcEngineEventHandler
 import io.agora.rtc2.RtcEngine
 import io.agora.rtc2.RtcEngineConfig
 import io.agora.rtc2.internal.LastmileProbeConfig
+import java.util.Random
 
 class MainActivity : AppCompatActivity() {
 
@@ -45,9 +47,9 @@ class MainActivity : AppCompatActivity() {
 
     // Track the status of your connection
     private var isJoined = false
-    private val isMuted = false
+    private var isMuted = false
 
-    private val genIntID = 0
+    private var genIntID = 0
 
     // Agora engine instance
     private var agoraEngine: RtcEngine? = null
@@ -94,6 +96,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        // Destroy the engine in a sub-thread to avoid congestion
+        Thread {
+            agoraEngine!!.leaveChannel()
+            RtcEngine.destroy()
+            agoraEngine = null
+        }.start()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -112,6 +125,11 @@ class MainActivity : AppCompatActivity() {
             "MUTE CALL", "NetworkStatus")
         binding.model = viewModel //now set the view model to UI binding class
 
+        //Generate random ID so that we can use it later for creating token
+        val rand = Random()
+        genIntID = rand.nextInt(5000)
+        Log.d(className, "Random ID: $genIntID")
+
         //Initialize click listener for buttons
         binding.amJoinLeaveBtn.setOnClickListener {
             //First check if we have audio permissions or not.
@@ -123,10 +141,23 @@ class MainActivity : AppCompatActivity() {
             } else {
                 //Permissions are granted...
                 //Generate a unique ID for user
+                joinLeaveChannel()
             }
         }
         binding.amMuteUnmuteBtn.setOnClickListener {
-            //TODO
+            if ( agoraEngine != null ) {
+                if (isMuted) {
+                    //audio is muted so un-mute it
+                    agoraEngine!!.muteLocalAudioStream(false);
+                    isMuted = false;
+                    viewModel.muteUnMuteButtonText = "MUTE";
+                } else {
+                    //audio is un-muted so mute it
+                    agoraEngine!!.muteLocalAudioStream(true);
+                    isMuted = true;
+                    viewModel.muteUnMuteButtonText = "UN-MUTE";
+                }
+            }
         }
 
         //Initialize Agora SDK
@@ -185,24 +216,69 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateNetworkStatus(quality: Int) {
-        if (quality in 1..2) binding.networkStatus.setColorFilter(
-            ContextCompat.getColor(
-                this@MainActivity, android.R.color.holo_green_light
+        if (quality in 1..2) {
+            binding.networkStatus.setColorFilter(
+                ContextCompat.getColor(
+                    this@MainActivity, android.R.color.holo_green_light
+                )
             )
-        ) else if (quality <= 4) binding.networkStatus.setColorFilter(
-            ContextCompat.getColor(
-                this@MainActivity, android.R.color.holo_orange_light
+            viewModel.networkStatus = "Network Status: Good"
+        } else if (quality <= 4) {
+            binding.networkStatus.setColorFilter(
+                ContextCompat.getColor(
+                    this@MainActivity, android.R.color.holo_orange_light
+                )
             )
-        ) else if (quality <= 6) binding.networkStatus.setColorFilter(
-            ContextCompat.getColor(
-                this@MainActivity, android.R.color.holo_red_dark
+            viewModel.networkStatus = "Network Status: Average"
+        } else if (quality <= 6) {
+            binding.networkStatus.setColorFilter(
+                ContextCompat.getColor(
+                    this@MainActivity, android.R.color.holo_red_dark
+                )
             )
-        ) else binding.networkStatus.setColorFilter(
-            ContextCompat.getColor(
-                this@MainActivity, android.R.color.darker_gray
+            viewModel.networkStatus = "Network Status: Poor"
+        } else {
+            binding.networkStatus.setColorFilter(
+                ContextCompat.getColor(
+                    this@MainActivity, android.R.color.darker_gray
+                )
             )
-        )
+            viewModel.networkStatus = "Network Status: Un-Available"
+        }
     }
 
+    private fun joinLeaveChannel() {
+        if (isJoined) {
+            object : Thread() {
+                override fun run() {
+                    agoraEngine!!.leaveChannel()
+                }
+            }.start()
+            viewModel.joinLeaveButtonText = "JOIN"
+        } else {
+            object : Thread() {
+                override fun run() {
+                    joinChannel()
+                }
+            }.start()
+            viewModel.joinLeaveButtonText = "LEAVE"
+        }
+    }
 
+    private fun joinChannel() {
+        val options = ChannelMediaOptions()
+        options.autoSubscribeAudio = true
+        // Set both clients as the BROADCASTER.
+        options.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER
+        // Set the channel profile as BROADCASTING.
+        options.channelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING
+
+        // Join the channel with a temp token.
+        // You need to specify the user ID yourself, and ensure that it is unique in the channel.
+        if (token != null) {
+            agoraEngine!!.joinChannel(token, channelName, genIntID, options)
+        } else {
+            Log.d(className, "token was null")
+        }
+    }
 }
