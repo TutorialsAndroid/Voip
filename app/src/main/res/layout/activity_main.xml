@@ -90,7 +90,9 @@
                 app:layout_constraintStart_toStartOf="@+id/am_join_channel_input_layout"
                 app:layout_constraintTop_toBottomOf="@+id/am_join_channel_input_layout"
                 android:text="@{model.joinLeaveButtonText}"
-                tools:text="JOIN NOW" />
+                android:enabled="@{model.joinButtonEnabled == true ? true : false}"
+                tools:text="JOIN NOW"
+                tools:enabled="false"/>
 
             <Button
                 android:id="@+id/am_mute_unmute_btn"
@@ -101,7 +103,9 @@
                 app:layout_constraintStart_toEndOf="@+id/am_join_leave_btn"
                 app:layout_constraintTop_toBottomOf="@+id/am_join_channel_input_layout"
                 android:text="@{model.muteUnMuteButtonText}"
-                tools:text="MUTE" />
+                android:enabled="@{model.muteButtonEnabled == true ? true : false}"
+                tools:text="MUTE"
+                tools:enabled="false"/>
 
             <ImageView
                 android:id="@+id/networkStatus"

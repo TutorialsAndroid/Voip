@@ -122,7 +122,7 @@ class MainActivity : AppCompatActivity() {
 
         //Initialize view model class with default values
         viewModel = MainActivityViewModel("Welcome", "JOIN NOW",
-            "MUTE CALL", "NetworkStatus")
+            "MUTE CALL", "NetworkStatus", false, false)
         binding.model = viewModel //now set the view model to UI binding class
 
         //Generate random ID so that we can use it later for creating token
