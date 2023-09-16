@@ -20,7 +20,6 @@ import io.agora.rtc2.RtcEngineConfig
 import io.agora.rtc2.internal.LastmileProbeConfig
 import java.util.Random
 
-
 class MainActivity : AppCompatActivity() {
 
     private var className = MainActivity::class.java.simpleName
@@ -39,8 +38,8 @@ class MainActivity : AppCompatActivity() {
     private var appId = ""
     private var appCertificate = ""
 
-    // Fill the channel name.
-    private val channelName = "voip_public_room"
+    // Fill the channel name. This is default channel name
+    private var channelName = "voip_public_room"
 
     // Fill the temp token generated on Agora Console.
     private var token: String? = null
@@ -149,8 +148,12 @@ class MainActivity : AppCompatActivity() {
                     this@MainActivity, requestedPermission, permissionReqId)
             } else {
                 //Permissions are granted...
-                //Generate a unique ID for user
-                joinLeaveChannel()
+                //Get the channel name from input field
+                channelName = binding.amJoinChannelEditText.text.toString()
+                //remove any type of white space in the channel name
+                val stringWithoutSpaces = channelName.replace("\\s+".toRegex(), "")
+                //Initialize Agora SDK
+                setupVoiceSDKEngine(channelName = stringWithoutSpaces)
             }
         }
         binding.amMuteUnmuteBtn.setOnClickListener {
@@ -182,7 +185,7 @@ class MainActivity : AppCompatActivity() {
                 i: Int, i2: Int, i3: Int
             ) {
                 // Do whatever
-                if (!charSequence.toString().trim { it <= ' ' }.isEmpty()) {
+                if (charSequence.toString().trim { it <= ' ' }.isNotEmpty()) {
                     Log.d(className, "Text Entered")
                     viewModel.isJoinButtonEnabled = true
                 } else {
@@ -192,9 +195,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.amJoinChannelEditText.addTextChangedListener(channelNameTextWatcher)
-
-        //Initialize Agora SDK
-        setupVoiceSDKEngine()
     }
 
     private fun checkSelfPermission(): Boolean {
@@ -202,7 +202,7 @@ class MainActivity : AppCompatActivity() {
             this@MainActivity, requestedPermission[0] ) == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun setupVoiceSDKEngine() {
+    private fun setupVoiceSDKEngine(channelName: String) {
         try {
             token = RtcTokenBuilder2Generator.RtcTokenGenerate(
                 appId,
@@ -240,6 +240,8 @@ class MainActivity : AppCompatActivity() {
         config.expectedDownlinkBitrate = 100000
         agoraEngine!!.startLastmileProbeTest(config)
         showMessage("Running the last mile probe test ...")
+        //....Now join the channel as all agora sdk has finished its initialization.
+        joinLeaveChannel()
     }
 
     private fun showMessage(message: String) {
@@ -287,7 +289,10 @@ class MainActivity : AppCompatActivity() {
                     agoraEngine!!.leaveChannel()
                 }
             }.start()
+            binding.amJoinChannelEditText.text = null
             viewModel.joinLeaveButtonText = "JOIN"
+            viewModel.isJoinButtonEnabled = false
+            viewModel.isMuteButtonEnabled = false
         } else {
             object : Thread() {
                 override fun run() {
@@ -295,6 +300,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }.start()
             viewModel.joinLeaveButtonText = "LEAVE"
+            viewModel.isJoinButtonEnabled = true
+            viewModel.isMuteButtonEnabled = true
         }
     }
 
