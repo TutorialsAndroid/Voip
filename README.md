@@ -1,5 +1,4 @@
 ## Voip
 
-*This is a sample app which is under development (It is not workable for now). This app will show you how to make internet voice and group calls using Agora SDK. I will do a daily commit with new changes. Contributors are welcome.*
-
-*Follow me and star it to stay up-to-date with the changes*
+*This is a sample project which shows how to do internet voice call using Agora SDK. I will update the readme soon with proper documentation. But for now the complete project is workable.*
+*For any queries raise a issue is Issue Tab*
