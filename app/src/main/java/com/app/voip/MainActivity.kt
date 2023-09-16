@@ -2,6 +2,8 @@ package com.app.voip
 
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +19,7 @@ import io.agora.rtc2.RtcEngine
 import io.agora.rtc2.RtcEngineConfig
 import io.agora.rtc2.internal.LastmileProbeConfig
 import java.util.Random
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -53,6 +56,9 @@ class MainActivity : AppCompatActivity() {
 
     // Agora engine instance
     private var agoraEngine: RtcEngine? = null
+
+    //Text-Watcher
+    private var channelNameTextWatcher: TextWatcher? = null
 
     private val mRtcEventHandler: IRtcEngineEventHandler = object : IRtcEngineEventHandler() {
         // Listen for the remote user joining the channel.
@@ -98,6 +104,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+
+        //remove channel name input text listener to prevent memory leaks
+        binding.amJoinChannelEditText.removeTextChangedListener(channelNameTextWatcher)
 
         // Destroy the engine in a sub-thread to avoid congestion
         Thread {
@@ -159,6 +168,28 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        //Channel name Edit Text Change Listener
+        channelNameTextWatcher = object : TextWatcher {
+            override fun afterTextChanged(editable: Editable) {}
+            override fun beforeTextChanged(
+                charSequence: CharSequence,
+                i: Int, i2: Int, i3: Int
+            ) { }
+
+            override fun onTextChanged(
+                charSequence: CharSequence,
+                i: Int, i2: Int, i3: Int
+            ) {
+                // Do whatever
+                if (charSequence.toString().trim { it <= ' ' }.isEmpty()) {
+                    Log.d(className, "Text Entered")
+                } else {
+                    Log.d(className, "Blank Text")
+                }
+            }
+        }
+        binding.amJoinChannelEditText.addTextChangedListener(channelNameTextWatcher)
 
         //Initialize Agora SDK
         setupVoiceSDKEngine()
