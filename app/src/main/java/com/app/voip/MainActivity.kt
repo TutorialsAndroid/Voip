@@ -182,10 +182,12 @@ class MainActivity : AppCompatActivity() {
                 i: Int, i2: Int, i3: Int
             ) {
                 // Do whatever
-                if (charSequence.toString().trim { it <= ' ' }.isEmpty()) {
+                if (!charSequence.toString().trim { it <= ' ' }.isEmpty()) {
                     Log.d(className, "Text Entered")
+                    viewModel.isJoinButtonEnabled = true
                 } else {
                     Log.d(className, "Blank Text")
+                    viewModel.isJoinButtonEnabled = false
                 }
             }
         }
