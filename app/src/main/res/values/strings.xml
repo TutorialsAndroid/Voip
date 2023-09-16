@@ -2,4 +2,5 @@
     <string name="app_name">Voip</string>
     <string name="am_title">Welcome!</string>
     <string name="am_join_channel_input_layout_hint">Enter channel name...</string>
+    <string name="am_summary">Enter channel name in the input field and then click on join button. This will create a channel and it will start broadcasting the audio on the channel. Then you can tell anyone to join the channel by its name and Hola there you go start chit-chatting.</string>
 </resources>

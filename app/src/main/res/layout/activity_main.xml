@@ -27,6 +27,19 @@
             android:textSize="25sp"
             tools:text="Welcome!"/>
 
+        <TextView
+            android:id="@+id/am_summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="@string/am_summary"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/am_title" />
+
         <!-- Input Field is added But the it is not called anywhere in class file. It is under development       -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/am_join_channel_input_layout"
@@ -34,8 +47,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            app:layout_constraintStart_toStartOf="@+id/am_title"
-            app:layout_constraintTop_toBottomOf="@+id/am_title"
+            app:layout_constraintStart_toStartOf="@+id/am_summary"
+            app:layout_constraintTop_toBottomOf="@+id/am_summary"
             android:hint="@string/am_join_channel_input_layout_hint"
             app:counterMaxLength="10"
             app:counterEnabled="true">
