@@ -50,6 +50,7 @@ class MainActivity : AppCompatActivity() {
     // Track the status of your connection
     private var isJoined = false
     private var isMuted = false
+    private var isSDkInitialized = false
 
     private var genIntID = 0
 
@@ -80,7 +81,7 @@ class MainActivity : AppCompatActivity() {
 
         override fun onLeaveChannel(stats: RtcStats) {
             // Listen for the local user leaving the channel
-            viewModel.title = "Press the button to join a channel"
+            viewModel.title = "Enter channel name and start the call again."
             isJoined = false
         }
 
@@ -136,6 +137,7 @@ class MainActivity : AppCompatActivity() {
         //Generate random ID so that we can use it later for creating token
         val rand = Random()
         genIntID = rand.nextInt(5000)
+        viewModel.title = "Welcome $genIntID"
         Log.d(className, "Random ID: $genIntID")
 
         //Initialize click listener for buttons
@@ -148,12 +150,20 @@ class MainActivity : AppCompatActivity() {
                     this@MainActivity, requestedPermission, permissionReqId)
             } else {
                 //Permissions are granted...
-                //Get the channel name from input field
-                channelName = binding.amJoinChannelEditText.text.toString()
-                //remove any type of white space in the channel name
-                val stringWithoutSpaces = channelName.replace("\\s+".toRegex(), "")
-                //Initialize Agora SDK
-                setupVoiceSDKEngine(channelName = stringWithoutSpaces)
+                if (!isSDkInitialized) {
+                    isJoined = false
+                    isSDkInitialized = true
+                    //Get the channel name from input field
+                    channelName = binding.amJoinChannelEditText.text.toString()
+                    //remove any type of white space in the channel name
+                    val stringWithoutSpaces = channelName.replace("\\s+".toRegex(), "")
+                    //Initialize Agora SDK
+                    setupVoiceSDKEngine(channelName = stringWithoutSpaces)
+                } else {
+                    isJoined = true
+                    isSDkInitialized = false
+                    joinLeaveChannel()
+                }
             }
         }
         binding.amMuteUnmuteBtn.setOnClickListener {
