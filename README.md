@@ -14,5 +14,7 @@
 2. You have to make unique channel to start a call.
 3. When you create a channel Agora starts to broadcast audio on that channel.
 
-**For more details about Agora SDK go to this link 👉 [!["Agora SDK"](https://raw.githubusercontent.com/TutorialsAndroid/Voip/master/screenshot/agora-logo.png)](https://docs.agora.io/en/voice-calling/overview/product-overview?platform=android)**
+**For more details about Agora SDK click on Agora image below 👇👇**
+
+[!["Agora SDK"](https://raw.githubusercontent.com/TutorialsAndroid/Voip/master/screenshot/agora-logo.png)](https://docs.agora.io/en/voice-calling/overview/product-overview?platform=android)
 
