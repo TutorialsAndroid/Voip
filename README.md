@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/TutorialsAndroid/Voip/master/app/src/main/res/drawable/voip_logo.png" width="120" height="120">
+
 ## Voip [ Make Voice and Group calls on internet ]
 
 *This is a sample project which shows how to do internet voice call using Agora SDK.*
