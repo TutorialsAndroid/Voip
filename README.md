@@ -1,4 +1,4 @@
-## Voip
+## Voip [ Make Voice and Group calls on internet ]
 
 *This is a sample project which shows how to do internet voice call using Agora SDK.*
 
@@ -19,4 +19,23 @@
 **For more details about Agora SDK click on Agora image below 👇👇**
 
 [!["Agora SDK"](https://raw.githubusercontent.com/TutorialsAndroid/Voip/master/screenshot/agora-logo.png)](https://docs.agora.io/en/voice-calling/overview/product-overview?platform=android)
+
+## License
+
+* [Apache Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
+
+```
+Copyright 2023 TutorialsAndroid - Voip
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
